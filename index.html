@@ -64,7 +64,8 @@
                         />
                         </div>
 
-                        <button class="btn btn-primary btn-sm btn-block">Add Student</button>
+                        <button id="addStdBtn" type="submit" class="btn btn-primary btn-sm btn-block">Add Student</button>
+                         <button id="updateStdBtn" type="button" class=" d-none btn btn-primary btn-sm btn-block">Update Student</button>
                 </form>
                     </div>
                 </div>
@@ -72,13 +73,14 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body table-responsive">
-               <table class="table table-bordered m-0">
+               <table class="table table-bordered m-0" id="stdTable">
+
                     <thead>
                         <tr>
                             <th>Sr No</th>
                             <th>Full Name</th>
-                            <th>Contact</th>
                             <th>Email</th>
+                            <th>Contact</th>
                             <th>Edit</th>
                             <th>Remove</th>
                         </tr>
@@ -99,6 +101,9 @@
                         </tr> -->
                     </tbody>
                 </table>
+                <p class="alert alert-warning d-none" id="noStdMsg">
+                    No Student Data!!!
+                </p>
                     </div>
                 </div>
                 

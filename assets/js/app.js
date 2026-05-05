@@ -5,6 +5,12 @@ const fnameControl = document.getElementById('fname')
 const lnameControl = document.getElementById('lname')
 const emailControl = document.getElementById('email')
 const contactControl = document.getElementById('contact')
+const addStdBtn = document.getElementById('addStdBtn')
+const updateStdBtn = document.getElementById('updateStdBtn')
+const stdTbale = document.getElementById('stdTable')
+const noStdMsg = document.getElementById('noStdMsg')
+
+
 
 
 // DB
@@ -45,7 +51,8 @@ arr.forEach((std,i) =>{
                             <td>${std.email}</td>
                             <td>${std.contact}</td>
                             <td>
-                                <i role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
+                                <i onClick="onStdEdit(this)"
+                                 role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
                                 </td>
                                 <td>
                                 <i onClick="onStdRemove(this)" 
@@ -79,9 +86,29 @@ function onStdRemove(ele){
         icon:'success',
         timer:3000
     })
+
+    if(stdArr.length == 0){
+        stdTbale.classList.add('d-none')
+        noStdMsg.classList.remove('d-none')
+    }
+
 }
         }
+ let EDIT_ID
+ function onStdEdit(ele){
+     EDIT_ID = ele.closest('tr').id
+    let EDIT_OBJ = stdArr.find(std =>{
+        return std.stdId === EDIT_ID
+    })
 
+    fnameControl.value = EDIT_OBJ.fname
+    lnameControl.value = EDIT_OBJ.lname
+    emailControl.value = EDIT_OBJ.email
+    contactControl.value = EDIT_OBJ.contact
+
+    addStdBtn.classList.add('d-none')
+    updateStdBtn.classList.remove('d-none')
+ }       
 
 function onStdSubmit(eve){
 eve.preventDefault()
@@ -107,7 +134,8 @@ tr.innerHTML = `
                   <td>${NEW_STD.email}</td>
                 <td>${NEW_STD.contact}</td>
                <td>
-                    <i role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
+                    <i onClick="onStdEdit(this)"
+                    role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
                 </td>
                 <td>
                     <i onClick="onStdRemove(this)" 
@@ -122,11 +150,52 @@ Swal.fire({
     icon:'success',
     timer: 3000
 })
+
+if(stdArr.length > 0){
+        stdTbale.classList.remove('d-none')
+        noStdMsg.classList.add('d-none')
+
+        templating(stdArr);
+    }else{
+        stdTbale.classList.add('d-none');
+        noStdMsg.classList.remove('d-none')
+    }
+
+}
+
+function onStdUpdate(e){
+    // update id
+    let UPDATE_ID = EDIT_ID
+    let UPDTAE_OBJ = {
+        fname: fnameControl.value,
+        lname: lnameControl.value,
+        email: emailControl.value,
+        contact: contactControl.value,
+        stdId: UPDATE_ID
+    }
+    stdForm.reset()
+    let getIndex = stdArr.findIndex(std => std.stdId === UPDATE_ID)
+    stdArr[getIndex] = UPDTAE_OBJ
+
+    let tr = document.getElementById(UPDATE_ID).children
+    tr[1].innerText = `${UPDTAE_OBJ.fname} ${UPDTAE_OBJ.lname}`
+    tr[2].innerText = `${UPDTAE_OBJ.email} `
+    tr[3].innerText = `${UPDTAE_OBJ.contact} `
+
+    addStdBtn.classList.remove('d-none')
+    updateStdBtn.classList.add('d-none')
+
+    Swal.fire({
+        title: `The student ${UPDTAE_OBJ.fname} ${UPDTAE_OBJ.lname} updated successfully!!!`,
+        icon: 'success',
+        timer: 3000
+    })
+
+    
+    
 }
 
 
-
-
 stdForm.addEventListener('submit',onStdSubmit)
-
+updateStdBtn.addEventListener('click',onStdUpdate)
 
