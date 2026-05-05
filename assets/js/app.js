@@ -1,5 +1,11 @@
 const cl = console.log;
 const stdContainer = document.getElementById('stdContainer')
+const stdForm = document.getElementById('stdForm')
+const fnameControl = document.getElementById('fname')
+const lnameControl = document.getElementById('lname')
+const emailControl = document.getElementById('email')
+const contactControl = document.getElementById('contact')
+
 
 // DB
 
@@ -52,6 +58,43 @@ stdContainer.innerHTML = result;
 }
 createTrs(stdArr)
 
+function onStdSubmit(eve){
+eve.preventDefault()
+let NEW_STD = {
+    fname: fnameControl.value,
+    lname: lnameControl.value,
+    email: emailControl.value,
+    contact: contactControl.value,
+    stdId: Date.now().toString()
+}
+cl(NEW_STD)
 
+stdArr.push(NEW_STD)
+
+stdForm.reset()
+
+// we will create a new tr and append it in tbody
+let tr = document.createElement('tr')
+
+tr.innerHTML = `
+                <td>1</td>
+                <td>${NEW_STD.fname} ${NEW_STD.lname}</td>
+                  <td>${NEW_STD.email}</td>
+                <td>${NEW_STD.contact}</td>
+               <td>
+                    <i role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
+                </td>
+                <td>
+                    <i role="button" class="fa-solid fa-trash fa-2x text-danger"></i>
+                </td>
+
+`
+stdContainer.append(tr)
+}
+
+
+
+
+stdForm.addEventListener('submit',onStdSubmit)
 
 
