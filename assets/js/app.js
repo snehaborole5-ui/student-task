@@ -39,7 +39,7 @@ function createTrs(arr){
 arr.forEach((std,i) =>{
     // cl(std)
     result += `
-            <tr>
+            <tr id="${std.stdId}">
                             <td>${i + 1}</td>
                             <td>${std.fname} ${std.lname}</td>
                             <td>${std.email}</td>
@@ -48,7 +48,8 @@ arr.forEach((std,i) =>{
                                 <i role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
                                 </td>
                                 <td>
-                                <i role="button" class="fa-solid fa-trash fa-2x text-danger"></i>
+                                <i onClick="onStdRemove(this)" 
+                                role="button" class="fa-solid fa-trash fa-2x text-danger"></i>
                             </td>
                         </tr>`
     
@@ -57,6 +58,30 @@ arr.forEach((std,i) =>{
 stdContainer.innerHTML = result;
 }
 createTrs(stdArr)
+
+function onStdRemove(ele){
+    let REMOVE_ID = ele.closest('tr').id 
+    let getConfirm = confirm(`Are you sure,you want to remove th student with ID ${REMOVE_ID} ?`)
+        cl(getConfirm)
+        if(getConfirm){
+                 let getIndex = stdArr.findIndex(std => {
+        return std.stdId === REMOVE_ID
+    })
+     let REMOVED_STD = stdArr.splice(getIndex,1)
+    ele.closest('tr').remove()
+    let allTrs = [...document.querySelectorAll('#stdContainer tr')]
+    allTrs.forEach((tr,i) =>{
+        tr.firstElementChild.innerText = i + 1
+
+    })
+    Swal.fire({
+        title:`The student ${REMOVED_STD[0].fname} ${REMOVED_STD[0].lname} removed successfully!!!`,
+        icon:'success',
+        timer:3000
+    })
+}
+        }
+
 
 function onStdSubmit(eve){
 eve.preventDefault()
@@ -85,11 +110,18 @@ tr.innerHTML = `
                     <i role="button" class="fa-solid fa-pen-to-square fa-2x text-success"></i>
                 </td>
                 <td>
-                    <i role="button" class="fa-solid fa-trash fa-2x text-danger"></i>
+                    <i onClick="onStdRemove(this)" 
+                    role="button" class="fa-solid fa-trash fa-2x text-danger"></i>
                 </td>
 
 `
 stdContainer.append(tr)
+
+Swal.fire({
+    title:`The new student ${NEW_STD.fname} ${NEW_STD.lname} added successfully!!!`,
+    icon:'success',
+    timer: 3000
+})
 }
 
 
